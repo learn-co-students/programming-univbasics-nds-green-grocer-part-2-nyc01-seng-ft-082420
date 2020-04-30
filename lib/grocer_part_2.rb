@@ -11,6 +11,7 @@ def apply_coupons(cart, coupons)
         couponed_item[:price] = coupon[:cost] / coupon[:num]
         couponed_item[:clearance] = grocery_item[:clearance]
         couponed_item[:count] = grocery_item[:count]
+        grocery_item[:count] = grocery_item[:count] - couponed_item[:count]
         couponed_array << grocery_item
         couponed_array << couponed_item
       end
