@@ -1,28 +1,12 @@
-# def find_item_by_name_in_collection(name, collection)
-#   index = 0
-
-#   collection.each do |grocery_item|
-#     return grocery_item if grocery_item[:item] === name 
-#     index += 1
-#   end
-
-#   nil
-# end
 def find_item_by_name_in_collection(name, collection)
-  success = nil
-  collection.each do |index|
-    index.map do |key, value|
-      if value == name
-        success = true
-      end
-    end
-    if success
-      return index
-    end
+  index = 0
+
+  collection.each do |grocery_item|
+    return grocery_item if grocery_item[:item] === name 
+    index += 1
   end
-  if !success 
-    return success
-  end
+
+  nil
 end
 
 def consolidate_cart(cart)
