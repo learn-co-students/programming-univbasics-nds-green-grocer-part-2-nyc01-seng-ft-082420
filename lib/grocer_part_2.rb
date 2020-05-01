@@ -19,8 +19,10 @@ def apply_coupons(cart, coupons)
             grocery_item[:count] = grocery_item[:count] % coupon[:num]
           end
         end
-        couponed_array << grocery_item
-        couponed_array << couponed_item
+        unless couponed_array.include? grocery_item
+          couponed_array << grocery_item
+        end
+        couponed_array << couponed_item if couponed_item[:count]
       end
     end
   else
@@ -30,10 +32,11 @@ def apply_coupons(cart, coupons)
 end
 
 def apply_clearance(cart)
+  
   new_cart = cart
   new_cart.map do |grocery_item|
-    if grocery_item[:clearance]
-      grocery_item[:price] -= (grocery_item[:price] * 0.20).round(2)
+    if grocery_item[:clearance] == true
+      grocery_item[:price] -= grocery_item[:price] * 0.20
     end
   end
   new_cart
@@ -43,13 +46,14 @@ def checkout(cart, coupons)
   consolidated_cart = consolidate_cart(cart)
   couponed_cart = apply_coupons(consolidated_cart, coupons)
   discounted_cart = apply_clearance(couponed_cart)
-  
   total = 0.00
   discounted_cart.each do |grocery_item|
     total += grocery_item[:price] * grocery_item[:count]
   end
+  
   if total > 100.00
     total -= (total * 0.10)
   end
-  total
+  # binding.pry
+  total.round(2)
 end
