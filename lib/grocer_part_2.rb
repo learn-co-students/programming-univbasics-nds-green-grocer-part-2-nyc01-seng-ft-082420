@@ -1,25 +1,46 @@
 require_relative './part_1_solution.rb'
+require 'pry'
 
 def apply_coupons(cart, coupons)
-  # Consult README for inputs and outputs
-  #
-  # REMEMBER: This method **should** update cart
+  applied_cart = []
+  cart.each do |item|
+    coupons.each do |coupon|
+      if item[:item] == coupon[:item]
+        name = item[:item]
+        cart << {
+          :item => "#{name} W/COUPON",
+          :price => (coupon[:cost] / coupon[:num]).to_f,
+          :clearance => item[:clearance],
+          :count => coupon[:num]
+        }
+        item[:count] -= coupon[:num]
+      end
+    end
+  end
 end
 
 def apply_clearance(cart)
-  # Consult README for inputs and outputs
-  #
-  # REMEMBER: This method **should** update cart
+  cart.map do |item|
+    if item[:clearance] == true
+      item[:price] = (item[:price] * 0.8).round(2)
+    end
+  end
+  cart
 end
 
 def checkout(cart, coupons)
-  # Consult README for inputs and outputs
-  #
-  # This method should call
-  # * consolidate_cart
-  # * apply_coupons
-  # * apply_clearance
-  #
-  # BEFORE it begins the work of calculating the total (or else you might have
-  # some irritated customers
+  new_cart = consolidate_cart(cart)
+  coupon_cart = apply_coupons(new_cart, coupons.uniq)
+  clearance_cart = apply_clearance(coupon_cart)
+  total = 0
+  
+  clearance_cart.each do |cart_data|
+    total += cart_data[:price] * cart_data[:count]
+  end
+  
+  if total >= 100.0
+    total -= (total * 0.1)
+  else
+    total
+  end
 end
