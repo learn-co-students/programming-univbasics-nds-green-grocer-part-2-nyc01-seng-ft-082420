@@ -2,7 +2,6 @@ require_relative './part_1_solution.rb'
 require 'pry'
 
 def apply_coupons(cart, coupons)
-  applied_cart = []
   cart.each do |item|
     coupons.each do |coupon|
       if item[:item] == coupon[:item]
@@ -13,7 +12,9 @@ def apply_coupons(cart, coupons)
           :clearance => item[:clearance],
           :count => coupon[:num]
         }
-        item[:count] -= coupon[:num]
+        if item[:count] >= coupon[:num]
+          item[:count] -= coupon[:num]
+        end
       end
     end
   end
